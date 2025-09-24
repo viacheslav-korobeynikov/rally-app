@@ -53,12 +53,12 @@ func getBool(key string, defaultValue bool) bool {
 
 // Структура конфигурации БД
 type DbConfig struct {
-	url string
+	Url string
 }
 
 // Извлечение конфига БД из переменной окружения
 func NewDatabaseConfig() *DbConfig {
 	return &DbConfig{
-		url: getString("DATABASE_URL", ""),
+		Url: getString("DATABASE_URL", ""),
 	}
 }
