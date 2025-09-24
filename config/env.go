@@ -50,3 +50,15 @@ func getBool(key string, defaultValue bool) bool {
 	}
 	return b
 }
+
+// Структура конфигурации БД
+type DbConfig struct {
+	url string
+}
+
+// Извлечение конфига БД из переменной окружения
+func NewDatabaseConfig() *DbConfig {
+	return &DbConfig{
+		url: getString("DATABASE_URL", ""),
+	}
+}
