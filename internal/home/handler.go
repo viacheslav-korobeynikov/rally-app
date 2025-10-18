@@ -1,16 +1,21 @@
 package home
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog"
+)
 
 // Структура хэндлера домашней страницы
 type HomeHandler struct {
-	router fiber.Router
+	router       fiber.Router
+	customLogger *zerolog.Logger
 }
 
 // Функция конструктор хэндлера
-func NewHandler(router fiber.Router) {
+func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 	h := &HomeHandler{
-		router: router,
+		router:       router,
+		customLogger: customLogger,
 	}
 	// Роутинг
 	h.router.Get("/", h.home) // При GET запросе вызывается функция home
