@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/viacheslav-korobeynikov/rally-app/config"
 	"github.com/viacheslav-korobeynikov/rally-app/internal/home"
+	"github.com/viacheslav-korobeynikov/rally-app/pkg/database"
 	"github.com/viacheslav-korobeynikov/rally-app/pkg/logger"
 )
 
@@ -16,12 +17,16 @@ func main() {
 	// Получение конфигурации логирования
 	logConfig := config.NewLogConfig()
 	customLogger := logger.NewLogger(logConfig)
+	// Получение кофигурации подключения к БД
+	dbConfig := config.NewDatabaseConfig()
 	// Создание инстанса приложения Fiber
 	app := fiber.New()
 	// Middleware для логирования запросов
 	app.Use(fiberzerolog.New(fiberzerolog.Config{
 		Logger: customLogger,
 	}))
+	dbpool := database.CreateDbPool(dbConfig, customLogger)
+	defer dbpool.Close()
 	// Добавлена зависимость с хендлером для главной страницы
 	home.NewHandler(app, customLogger)
 	//Настраиваем порт, который будем слушать
